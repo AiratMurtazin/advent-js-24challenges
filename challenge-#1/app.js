@@ -16,7 +16,7 @@ const inputs = document.querySelectorAll('input')
 const ring = document.querySelector('.ring')
 let timeRunning = false
 // let startingMinutes = mins.querySelector('input').value
-let time = startingMinutes * 60
+let time = +startingMinutes * 60
 //! FUNCTIONS
 function startTimer() {
 	timeRunning = true
@@ -47,18 +47,28 @@ function updateCountDown() {
 	if (time < 0) {
 		clearInterval(intervalId)
 		ring.classList.add('ending')
+		setTimeout(() => {
+			alert('Time is up')
+		}, 1000)
 	}
 }
 
 //! EVENT LISTENERS
 
-inputMinutes.addEventListener('change', e => {
-	startingMinutes = e.target.value
-	time = startingMinutes * 60
-})
+setttingsBtn.addEventListener('click', () => {
+	inputMinutes.addEventListener('change', e => {
+		const minutes = parseInt(inputMinutes.value)
+		if (!isNaN(minutes)) {
+			time = minutes * 60 + (parseInt(inputSeconds.value) || 0)
+		}
+	})
 
-inputSeconds.addEventListener('change', () => {
-	startingSeconds = e.target.value
+	inputSeconds.addEventListener('change', () => {
+		const seconds = parseInt(inputSeconds.value)
+		if (!isNaN(seconds)) {
+			time = parseInt(inputMinutes.value) * 60 + seconds
+		}
+	})
 })
 
 startBtn.addEventListener('click', () => {
