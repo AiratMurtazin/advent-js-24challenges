@@ -1,23 +1,33 @@
 'use strict'
 
-const startingMinutes = 15
-let time = startingMinutes * 60
+let startingMinutes = '25'
+let startingSeconds = '00'
 let intervalId // Variable to store the interval ID
+let inputMinutes = document.querySelector('.inMin')
+let inputSeconds = document.querySelector('.inSec')
+inputMinutes.value = startingMinutes
+inputSeconds.value = startingSeconds
 let mins = document.querySelector('.minutes')
 let secs = document.querySelector('.seconds')
 const startBtn = document.getElementById('start')
-const stopBtn = document.querySelector('.stop')
+const stopBtn = document.querySelector('.pause')
+const setttingsBtn = document.querySelector('.settings')
+const inputs = document.querySelectorAll('input')
+const ring = document.querySelector('.ring')
 let timeRunning = false
-
+// let startingMinutes = mins.querySelector('input').value
+let time = startingMinutes * 60
+//! FUNCTIONS
 function startTimer() {
 	timeRunning = true
 	intervalId = setInterval(updateCountDown, 1000)
-	startBtn.innerHTML = `stop`
-	startBtn.classList.add('stop')
+	startBtn.innerHTML = `pause`
+	startBtn.classList.add('pause')
 }
-function stopTimer() {
-	if (startBtn.classList.contains('stop')) {
-		startBtn.classList.remove('stop')
+
+function pauseTimer() {
+	if (startBtn.classList.contains('pause')) {
+		startBtn.classList.remove('pause')
 		startBtn.innerHTML = `start`
 		clearInterval(intervalId)
 		timeRunning = false
@@ -36,13 +46,25 @@ function updateCountDown() {
 
 	if (time < 0) {
 		clearInterval(intervalId)
+		ring.classList.add('ending')
 	}
 }
+
+//! EVENT LISTENERS
+
+inputMinutes.addEventListener('change', e => {
+	startingMinutes = e.target.value
+	time = startingMinutes * 60
+})
+
+inputSeconds.addEventListener('change', () => {
+	startingSeconds = e.target.value
+})
 
 startBtn.addEventListener('click', () => {
 	if (!timeRunning) {
 		startTimer()
 	} else {
-		stopTimer()
+		pauseTimer()
 	}
 })
